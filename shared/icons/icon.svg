@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="#1565c0"/>
+  <!-- Paw pad – main central pad -->
+  <ellipse cx="256" cy="300" rx="90" ry="80" fill="#ffffff"/>
+  <!-- Toe pads -->
+  <ellipse cx="156" cy="200" rx="42" ry="50" fill="#ffffff"/>
+  <ellipse cx="220" cy="168" rx="42" ry="50" fill="#ffffff"/>
+  <ellipse cx="292" cy="168" rx="42" ry="50" fill="#ffffff"/>
+  <ellipse cx="356" cy="200" rx="42" ry="50" fill="#ffffff"/>
+  <!-- Star accent -->
+  <text x="256" y="318" font-size="72" text-anchor="middle" dominant-baseline="middle"
+        font-family="sans-serif" fill="#f9a825">★</text>
+</svg>

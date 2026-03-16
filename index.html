@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Learn With Paw Patrol – a fun toddler learning game." />
+  <meta name="theme-color" content="#1565c0" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="PawLearn" />
+
+  <title>Learn With Paw Patrol</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- App icon for iOS / older Android -->
+  <link rel="apple-touch-icon" href="shared/icons/icon.svg" />
+
+  <!-- Shared stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <span class="logo">🐾 PawLearn</span>
+  </header>
+
+  <main>
+    <h1>Learn With Paw Patrol!</h1>
+    <p class="mb-1">Tap a game to start playing.</p>
+
+    <nav class="game-grid" aria-label="Game selection">
+
+      <!-- Colours game -->
+      <a class="game-card" href="games/colors/index.html" aria-label="Play the Colours game">
+        <span class="icon" aria-hidden="true">🎨</span>
+        <span class="title">Colours</span>
+        <span class="desc">Tap the right colour!</span>
+      </a>
+
+      <!-- Shapes game -->
+      <a class="game-card" href="games/shapes/index.html" aria-label="Play the Shapes game">
+        <span class="icon" aria-hidden="true">🔷</span>
+        <span class="title">Shapes</span>
+        <span class="desc">Find the matching shape!</span>
+      </a>
+
+    </nav>
+  </main>
+
+  <!-- PWA Service Worker registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('./sw.js', { scope: './' })
+          .then(reg => console.log('[SW] Registered, scope:', reg.scope))
+          .catch(err => console.warn('[SW] Registration failed:', err));
+      });
+    }
+  </script>
+
+</body>
+</html>
