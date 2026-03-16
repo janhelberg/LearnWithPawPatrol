@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#1565c0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+
+  <title>Colours – Learn With Paw Patrol</title>
+
+  <link rel="manifest" href="../../manifest.json" />
+  <link rel="stylesheet" href="../../css/style.css" />
+
+  <style>
+    /* Extra game-specific styles */
+    .canvas-wrap { max-width: 380px; }
+
+    canvas { border-radius: 50%; }   /* circle canvas for the colour swatch */
+
+    .choice-btn {
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      min-height: 64px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="logo" href="../../index.html" aria-label="Home">🐾 PawLearn</a>
+    <a class="back-btn" href="../../index.html" aria-label="Back to main menu">← Menu</a>
+  </header>
+
+  <main>
+    <h1>Colours</h1>
+
+    <!-- Score bar -->
+    <div class="score-bar" role="status" aria-live="polite">
+      <span class="score-badge" id="scoreDisplay">⭐ 0 / 0</span>
+    </div>
+
+    <!-- Instruction -->
+    <p class="instruction" id="instruction" aria-live="polite">Loading…</p>
+
+    <!-- Canvas colour swatch -->
+    <div class="canvas-wrap">
+      <canvas id="colourCanvas" width="320" height="320"
+              aria-label="Colour swatch to identify"></canvas>
+    </div>
+
+    <!-- Feedback -->
+    <p class="feedback" id="feedback" aria-live="assertive"></p>
+
+    <!-- Answer buttons -->
+    <div class="choices" id="choices" role="group" aria-label="Colour choices"></div>
+  </main>
+
+  <!-- Shared utilities -->
+  <script src="../../shared/responsive-scaling.js"></script>
+  <script src="../../shared/game-common.js"></script>
+
+  <script>
+    /* =========================================================
+       Colours Game
+       =========================================================
+       Rounds: show a coloured circle on canvas.
+       Player taps the button with the matching colour name.
+       Uses Web Speech API to announce the target colour.
+    ========================================================= */
+
+    const COLOURS = [
+      { name: 'Red',    hex: '#e53935' },
+      { name: 'Blue',   hex: '#1e88e5' },
+      { name: 'Green',  hex: '#43a047' },
+      { name: 'Yellow', hex: '#fdd835' },
+      { name: 'Orange', hex: '#fb8c00' },
+      { name: 'Purple', hex: '#8e24aa' },
+      { name: 'Pink',   hex: '#e91e63' },
+      { name: 'Brown',  hex: '#6d4c41' },
+    ];
+
+    const GAME_ID = 'colors';
+    const NUM_CHOICES = 4;
+
+    // DOM refs
+    const canvas      = document.getElementById('colourCanvas');
+    const ctx         = canvas.getContext('2d');
+    const instruction = document.getElementById('instruction');
+    const feedback    = document.getElementById('feedback');
+    const choicesEl   = document.getElementById('choices');
+    const scoreEl     = document.getElementById('scoreDisplay');
+
+    // Responsive scaling
+    ResponsiveScaling.initCanvas(canvas, 320, 320);
+
+    // Game state
+    let score   = GameCommon.loadScore(GAME_ID);
+    let target  = null;
+    let choices = [];
+    let locked  = false;
+
+    /* ---- Draw a circle filled with the target colour ---- */
+    function drawColour(hex) {
+      const cx = canvas.width  / 2;
+      const cy = canvas.height / 2;
+      const r  = canvas.width  / 2 - 10;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Shadow
+      ctx.shadowColor   = 'rgba(0,0,0,0.25)';
+      ctx.shadowBlur    = 20;
+      ctx.shadowOffsetY = 6;
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = hex;
+      ctx.fill();
+
+      ctx.shadowColor = 'transparent';
+
+      // Shine
+      const shine = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, r * 0.05,
+                                             cx,            cy,            r);
+      shine.addColorStop(0,   'rgba(255,255,255,0.35)');
+      shine.addColorStop(0.6, 'rgba(255,255,255,0)');
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = shine;
+      ctx.fill();
+    }
+
+    /* ---- Render choice buttons ---- */
+    function renderChoices() {
+      choicesEl.innerHTML = '';
+      choices.forEach(colour => {
+        const btn = document.createElement('button');
+        btn.className    = 'choice-btn';
+        btn.textContent  = colour.name;
+        btn.style.background = colour.hex;
+        btn.dataset.name = colour.name;
+        btn.addEventListener('click', () => onAnswer(colour, btn));
+        btn.addEventListener('touchend', e => {
+          e.preventDefault();
+          onAnswer(colour, btn);
+        }, { passive: false });
+        choicesEl.appendChild(btn);
+      });
+    }
+
+    /* ---- Start a new round ---- */
+    function newRound() {
+      locked  = false;
+      feedback.textContent = '';
+
+      const pool   = GameCommon.pickRandomN(COLOURS, NUM_CHOICES);
+      target  = pool[0];                          // First pick is always the target.
+      choices = GameCommon.shuffle(pool);
+
+      drawColour(target.hex);
+      instruction.textContent = `Find the colour: ${target.name}!`;
+      renderChoices();
+
+      GameCommon.speak(`What colour is this? Find ${target.name}!`);
+      GameCommon.playTone('start', 0.2);
+    }
+
+    /* ---- Handle answer ---- */
+    function onAnswer(colour, btn) {
+      if (locked) return;
+      locked = true;
+
+      score.total++;
+      const correct = colour.name === target.name;
+
+      if (correct) {
+        score.correct++;
+        btn.classList.add('correct');
+        feedback.textContent = '🎉 Great job!';
+        GameCommon.speak(`Yes! ${target.name}! Great job!`);
+        GameCommon.playTone('correct');
+      } else {
+        btn.classList.add('incorrect');
+        // Highlight the correct answer
+        choicesEl.querySelectorAll('.choice-btn').forEach(b => {
+          if (b.dataset.name === target.name) b.classList.add('correct');
+        });
+        feedback.textContent = `That's ${colour.name}. The answer was ${target.name}.`;
+        GameCommon.speak(`Almost! The answer was ${target.name}.`);
+        GameCommon.playTone('incorrect');
+      }
+
+      scoreEl.textContent = `⭐ ${score.correct} / ${score.total}`;
+      GameCommon.saveScore(GAME_ID, score);
+
+      setTimeout(newRound, 1800);
+    }
+
+    /* ---- Init ---- */
+    scoreEl.textContent = `⭐ ${score.correct} / ${score.total}`;
+    newRound();
+  </script>
+
+</body>
+</html>

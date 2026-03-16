@@ -1,0 +1,242 @@
+/* =============================================================
+   LearnWithPawPatrol – shared stylesheet
+   ============================================================= */
+
+/* ---- Reset & base ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-bg:       #e3f2fd;
+  --color-primary:  #1565c0;
+  --color-accent:   #f9a825;
+  --color-text:     #212121;
+  --color-card:     #ffffff;
+  --radius:         16px;
+  --shadow:         0 4px 16px rgba(0, 0, 0, 0.15);
+  --font-size-base: clamp(1rem, 3vw, 1.4rem);
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100%;
+  padding: 1rem;
+}
+
+/* ---- Typography ---- */
+h1 {
+  font-size: clamp(1.8rem, 6vw, 3rem);
+  color: var(--color-primary);
+  text-align: center;
+  margin-bottom: 0.25em;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.12);
+}
+
+h2 {
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  color: var(--color-primary);
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+
+p {
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ---- Header / branding bar ---- */
+.site-header {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.site-header .logo {
+  font-size: clamp(1.4rem, 5vw, 2.2rem);
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.5em 1.2em;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.back-btn:hover  { background: #0d47a1; }
+.back-btn:active { transform: scale(0.96); }
+
+/* ---- Game-card grid (main menu) ---- */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 1rem;
+}
+
+.game-card {
+  background: var(--color-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+
+.game-card:hover  { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+.game-card:active { transform: scale(0.97); }
+
+.game-card .icon {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.game-card .title {
+  font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.game-card .desc {
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  color: #555;
+  text-align: center;
+}
+
+/* ---- Canvas wrapper ---- */
+.canvas-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 1rem;
+}
+
+canvas {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: #fff;
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: manipulation;
+}
+
+/* ---- Answer / choice buttons ---- */
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.choice-btn {
+  flex: 1 1 40%;
+  min-width: 120px;
+  max-width: 220px;
+  border: 4px solid transparent;
+  border-radius: var(--radius);
+  padding: 1rem 0.5rem;
+  font-size: clamp(1rem, 3.5vw, 1.3rem);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+  box-shadow: var(--shadow);
+}
+
+.choice-btn:hover  { transform: scale(1.05); }
+.choice-btn:active { transform: scale(0.97); }
+.choice-btn.correct   { border-color: #2e7d32 !important; box-shadow: 0 0 0 4px #a5d6a7; }
+.choice-btn.incorrect { border-color: #c62828 !important; box-shadow: 0 0 0 4px #ef9a9a; }
+
+/* ---- Score / feedback banner ---- */
+.score-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 1rem;
+}
+
+.score-badge {
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.3em 1em;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  font-weight: 700;
+}
+
+.feedback {
+  font-size: clamp(1.1rem, 4vw, 1.6rem);
+  font-weight: 700;
+  min-height: 2em;
+  text-align: center;
+  color: var(--color-primary);
+  transition: opacity 0.3s;
+}
+
+/* ---- Instruction label ---- */
+.instruction {
+  font-size: clamp(1rem, 3.5vw, 1.4rem);
+  font-weight: 600;
+  text-align: center;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+}
+
+/* ---- Utility ---- */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.mt-1 { margin-top: 1rem; }
+.mb-1 { margin-bottom: 1rem; }
