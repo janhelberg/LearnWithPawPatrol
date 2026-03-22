@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="../../css/style.css" />
 
   <style>
+        body {
+          background: #fffbe8 !important;
+        }
     /* Extra game-specific styles */
     .canvas-wrap { max-width: 380px; }
 
@@ -27,32 +30,33 @@
 <body>
 
   <header class="site-header">
-    <a class="logo" href="../../index.html" aria-label="Home">🐾 PawLearn</a>
     <a class="back-btn" href="../../index.html" aria-label="Back to main menu">← Menu</a>
   </header>
 
   <main>
-    <h1>Colours</h1>
+    <div class="game-solid-bg">
+      <h1>Colours</h1>
 
-    <!-- Score bar -->
-    <div class="score-bar" role="status" aria-live="polite">
-      <span class="score-badge" id="scoreDisplay">⭐ 0 / 0</span>
+      <!-- Score bar -->
+      <div class="score-bar" role="status" aria-live="polite">
+        <span class="score-badge" id="scoreDisplay">⭐ 0 / 0</span>
+      </div>
+
+      <!-- Instruction -->
+      <p class="instruction" id="instruction" aria-live="polite">Loading…</p>
+
+      <!-- Canvas colour swatch -->
+      <div class="canvas-wrap">
+        <canvas id="colourCanvas" width="320" height="320"
+                aria-label="Colour swatch to identify"></canvas>
+      </div>
+
+      <!-- Feedback -->
+      <p class="feedback" id="feedback" aria-live="assertive"></p>
+
+      <!-- Answer buttons -->
+      <div class="choices" id="choices" role="group" aria-label="Colour choices"></div>
     </div>
-
-    <!-- Instruction -->
-    <p class="instruction" id="instruction" aria-live="polite">Loading…</p>
-
-    <!-- Canvas colour swatch -->
-    <div class="canvas-wrap">
-      <canvas id="colourCanvas" width="320" height="320"
-              aria-label="Colour swatch to identify"></canvas>
-    </div>
-
-    <!-- Feedback -->
-    <p class="feedback" id="feedback" aria-live="assertive"></p>
-
-    <!-- Answer buttons -->
-    <div class="choices" id="choices" role="group" aria-label="Colour choices"></div>
   </main>
 
   <!-- Shared utilities -->

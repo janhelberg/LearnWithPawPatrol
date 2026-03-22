@@ -28,7 +28,8 @@ html, body {
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: var(--color-bg);
+  background: url('../shared/Background/MainImage.png') no-repeat center center fixed;
+  background-size: cover;
   color: var(--color-text);
   font-size: var(--font-size-base);
   display: flex;
@@ -107,7 +108,9 @@ p {
 }
 
 .game-card {
-  background: var(--color-card);
+  background: #fffbe8;
+  /* Add a border for extra contrast */
+  border: 2px solid #ffe082;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 2rem 1.5rem;
@@ -125,8 +128,19 @@ p {
 .game-card:active { transform: scale(0.97); }
 
 .game-card .icon {
-  font-size: 4rem;
+  font-size: 2.5rem;
   line-height: 1;
+}
+
+/* Move the two game cards right and up by 20% */
+.game-grid {
+  position: relative;
+}
+.game-card {
+  position: relative;
+  left: 160%;
+  top: -20%;
+  transform: scale(0.5);
 }
 
 .game-card .title {
