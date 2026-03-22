@@ -10,10 +10,27 @@
   "theme_color": "#1565c0",
   "icons": [
     {
-      "src": "shared/icons/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "shared/icons/chase.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "shared/icons/chase.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/wide-example.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "screenshots/mobile-example.png",
+      "sizes": "375x667",
+      "type": "image/png"
     }
   ]
 }
